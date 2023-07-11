@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="ENOTE, bookstore, books">
+    <meta name="author" content="Frank Ssekanjako">
+    <title>Add Book</title>
+</head>
+<body>
+    <h1>Add Book</h1>
+
+    <form method="post" action="{% url 'dash' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+
+        <label for="is_available">Is Available:</label>
+        <input type="checkbox" id="is_available" name="is_available">
+
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image">
+
+        <button type="submit">Add Book</button>
+    </form>
+</body>
+</html>
