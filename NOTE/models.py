@@ -11,10 +11,10 @@ class UserProfile(models.Model):
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
-    is_available = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='book_images')  # Add the image field
+    is_available = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='book_images', blank=True)
 
     def __str__(self):
         return self.title
@@ -30,3 +30,12 @@ class BorrowedBook(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title}"
+
+
+class Feedback(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name

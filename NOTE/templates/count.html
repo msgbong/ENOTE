@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="ENOTE, bookstore, books">
+    <meta name="author" content="Frank Ssekanjako">
+    <title>{{ username }}'s countdown</title>
+    <script>
+        function countdown() {
+            // Set the date and time for the countdown
+            var countDownDate = new Date();
+            countDownDate.setHours(countDownDate.getHours() + 72); // Add 72 hours (3 days)
+
+            // Update the countdown every second
+            var countdownInterval = setInterval(function() {
+                // Get the current date and time
+                var now = new Date().getTime();
+
+                // Find the time difference between now and the countdown date
+                var timeDifference = countDownDate - now;
+
+                // Calculate days, hours, minutes, and seconds
+                var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+                // Display the countdown
+                document.getElementById("countdown").innerHTML = days + " days, " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
+
+                // If the countdown is finished, display a message
+                if (timeDifference < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById("countdown").innerHTML = "Time's up!";
+                }
+            }, 1000);
+        }
+    </script>
+</head>
+<body onload="countdown()">
+    <h1>{{ username }}'s Countdown</h1>
+    <p id="countdown"></p>
+</body>
+</html>

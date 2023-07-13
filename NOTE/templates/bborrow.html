@@ -9,10 +9,10 @@
     <script>
         // Function to calculate and update the countdown timer
         function updateCountdown() {
-            var returnDate = new Date("{{ borrowed_book.return_date }}");
+            var returnDate = new Date("{{ return_date }}"); // Assuming 'return_date' is passed from the view context
             var currentDate = new Date();
             var timeDiff = returnDate.getTime() - currentDate.getTime();
-
+    
             if (timeDiff <= 0) {
                 // If the return date has passed
                 document.getElementById("countdown").innerHTML = "Time expired";
@@ -22,38 +22,40 @@
                 var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
+    
                 // Display the countdown timer
                 document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
             }
         }
-
+    
+        // Update the countdown timer immediately
+        updateCountdown();
+    
         // Update the countdown timer every second
         setInterval(updateCountdown, 1000);
     </script>
+    
 </head>
 <body>
     <form method="post" action="{% url 'bborrow' %}">
         {% csrf_token %}
         <label for="student_number">Student Number:</label>
         <input type="text" id="student_number" name="student_number" required>
-
+    
         <label for="book">Borrow Book:</label>
         <select id="book" name="book" required>
             <option value="">Select a book</option>
             {% for book in books %}
-                <option value="{{ book.id }}">{{ book.title }}</option>
-                    {% if book.image %}
-                        {% with book.image.url as book_image %}
-                            <img src="{{ book_image }}" alt="{{ book.title }}" width="50px" height="50px">
-                        {% endwith %}
-                    {% endif %}
+                <option value="{{ book.id }}" {% if book.is_borrowed %}disabled{% endif %}>{{ book.title }}</option>
+                {% if book.image %}
+                    {% with book.image.url as book_image %}
+                        <img src="{{ book_image }}" alt="{{ book.title }}" width="50px" height="50px">
+                    {% endwith %}
+                {% endif %}
             {% endfor %}
         </select>
-
-        <button type="submit">Borrow</button>
     </form>
-
+    
     <div id="countdown"></div>
 </body>
 </html>
