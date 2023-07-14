@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="ENOTE, bookstore, books">
-    <meta name="author" content="Frank Ssekanjako">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="ENOTE, bookstore, books" />
+    <meta name="author" content="Frank Ssekanjako" />
     <title>User Registration</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>User Registration</h1>
     <form method="POST" action="{% url 'signup' %}">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br><br>
-        <label for="student_number">Student Number:</label>
-        <input type="text" id="student_number" name="student_number" required>
-        <br><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br><br>
-        <input type="submit" value="Sign Up">
-    </form><br><p>Gat the account already?</p>
-    <a href="/NOTE/login"><button>Login</button></a><br><br>OR<br>
+      {% csrf_token %}
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required />
+      <br /><br />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+      <br /><br />
+      <label for="student_number">Student Number:</label>
+      <input type="text" id="student_number" name="student_number" required />
+      <br /><br />
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+      <br /><br />
+      <input type="submit" value="Sign Up" />
+    </form>
+    <br />
+    <p>Gat the account already?</p>
+    <a href="/NOTE/login"><button>Login</button></a><br /><br />OR<br />
     <a href="/NOTE"><button>GoBack to welcoming page.🫱🏾‍🫲🏿</button></a>
-</body>
+  </body>
 </html>

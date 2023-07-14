@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="ENOTE, bookstore, books">
-    <meta name="author" content="Frank Ssekanjako">
-    <title>{{ username }}'s countdown</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="ENOTE, bookstore, books" />
+    <meta name="author" content="Frank Ssekanjako" />
+    <title>{{ user.username }}'s countdown</title>
     <script>
         function countdown() {
-            // Set the date and time for the countdown
-            var countDownDate = new Date();
+          // Get the countdown date from the user's session storage
+          var countDownDate = sessionStorage.getItem("countDownDate");
+
+          // If the countdown date is not set, calculate and set it
+          if (!countDownDate) {
+            countDownDate = new Date();
             countDownDate.setHours(countDownDate.getHours() + 72); // Add 72 hours (3 days)
+              sessionStorage.setItem("countDownDate", countDownDate);
+            } else {
+              countDownDate = new Date(countDownDate); // Convert the stored date string back to a Date object
+            }
 
             // Update the countdown every second
             var countdownInterval = setInterval(function() {
@@ -27,7 +36,8 @@
                 var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
                 // Display the countdown
-                document.getElementById("countdown").innerHTML = days + " days, " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
+              document.getElementById("countdown").innerHTML =
+                days + " days, " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
 
                 // If the countdown is finished, display a message
                 if (timeDifference < 0) {
@@ -38,8 +48,10 @@
         }
     </script>
 </head>
+
 <body onload="countdown()">
-    <h1>{{ username }}'s Countdown</h1>
+    <h1>{{ user.username }}'s Countdown</h1>
     <p id="countdown"></p>
 </body>
+
 </html>

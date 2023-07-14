@@ -65,26 +65,36 @@ def dashboard(request):
 @login_required
 def borrow_book(request):
     user = request.user
-    
+
     # Check if the user has already borrowed a book
     if BorrowedBook.objects.filter(user=user, is_returned=False).exists():
-        messages.error(request, 'You have already borrowed a book. Please return it before borrowing another one.')
-        return redirect('dash')
+        messages.error(
+            request,
+            "You have already borrowed a book. Please return it before borrowing another one.",
+        )
+        return redirect("bret")
 
-    if request.method == 'POST':
-        student_number = request.POST.get('student_number')
-        book_id = request.POST.get('book')
+    if request.method == "POST":
+        student_number = request.POST.get("student_number")
+        email = request.POST.get("email")
+        book_id = request.POST.get("book")
 
         try:
             book = Book.objects.get(id=book_id, is_available=True)
         except Book.DoesNotExist:
-            messages.error(request, 'Sorry, the selected book is not available for borrowing. Please choose another book.')
-            return redirect('borrow')
+            messages.error(
+                request,
+                "Sorry, the selected book is not available for borrowing. Please choose another book.",
+            )
+            return redirect("borrow")
 
         borrowed_book = BorrowedBook(user=user, book=book)
 
         # Set the return date as three days from the borrowed date
         borrowed_book.return_date = datetime.now() + timedelta(days=3)
+        
+        # Assign the email to the BorrowedBook instance
+        borrowed_book.email = email
 
         borrowed_book.save()
 
@@ -92,20 +102,36 @@ def borrow_book(request):
         book.is_available = False
         book.save()
 
-        # Send confirmation email to the user
-        subject = 'Book Borrowed Successfully'
+        # Send confirmation email to the provided email address
+        subject = "Book Borrowed Successfully"
         message = f"Dear {user.username},\n\nYou have successfully borrowed the book: {book.title}.\n\nPlease return the book by {borrowed_book.return_date.strftime('%Y-%m-%d %H:%M:%S')}.\n\nThank you!"
-        from_email = 'enote7y@gmail.com'
-        to_email = user.email
-        send_mail(subject, message, from_email, [to_email])
+        from_email = "enote7y@gmail.com"  # Customize the sender email
+        to_email = email
+        try:
+            send_mail(subject, message, from_email, [to_email])
+            messages.success(
+                request, "Book borrowed successfully. Confirmation email has been sent."
+            )
+        except Exception as e:
+            messages.error(
+                request,
+                "Book borrowed successfully, but failed to send the confirmation email.",
+            )
 
-        messages.success(request, 'Book borrowed successfully. Confirmation email has been sent.')
-        return redirect('count')
+        return redirect("count")
 
     # Fetch available books to populate the dropdown
     available_books = Book.objects.filter(is_available=True)
-    context = {'books': available_books}
-    return render(request, 'bborrow.html', context)
+    context = {"books": available_books}
+    return render(request, "bborrow.html", context)
+
+def acr(request):
+    if not request.user.is_staff:
+        return redirect('login')  # Redirect non-admin users to login page
+
+    borrowed_books = BorrowedBook.objects.filter(is_returned=False)
+    context = {'borrowed_books': borrowed_books}
+    return render(request, 'acr.html', context)
 
 def acr(request):
     if not request.user.is_staff:
@@ -160,8 +186,66 @@ def success(request):
 def success(request):
     return render(request, 'success.html')
 
-def count (request):
-    return render (request, 'count.html')
+
+
+def count(request):
+    user = request.user
+
+    # Get the countdown date from the user's session storage
+    count_down_date_str = request.session.get('count_down_date')
+
+    # If the countdown date is not set, calculate and set it
+    if not count_down_date_str:
+        count_down_date = datetime.now() + timedelta(days=3)
+        count_down_date_str = count_down_date.isoformat()
+        request.session['count_down_date'] = count_down_date_str
+
+    # Convert the countdown date string back to a datetime object
+    count_down_date = datetime.fromisoformat(count_down_date_str)
+
+    # Calculate the remaining time
+    current_time = datetime.now()
+    time_difference = count_down_date - current_time
+
+    # Check if the countdown has elapsed
+    if time_difference.total_seconds() <= 0:
+        # Send email notification
+        subject = "Countdown Time Elapsed"
+        message = f"Dear {user.username},\n\nThe countdown time has elapsed. You are fined 10,000/= for each day of delay.\n\nPlease make the payment promptly.\n\nThank you!"
+        from_email = "your-email@example.com"  # Customize the sender email
+        to_email = user.email
+        send_mail(subject, message, from_email, [to_email])
+
+        # Calculate the number of days of delay
+        delay_days = abs(time_difference.days)
+
+        # Calculate the fine amount
+        fine_amount = delay_days * 10000
+
+        # Update user's account balance
+        user.account_balance -= fine_amount
+        user.save()
+
+        # Log the fine
+        Fine.objects.create(user=user, amount=fine_amount, delay_days=delay_days)
+
+    # Extract the days, hours, minutes, and seconds
+    days = time_difference.days
+    hours = time_difference.seconds // 3600
+    minutes = (time_difference.seconds % 3600) // 60
+    seconds = time_difference.seconds % 60
+
+    context = {
+        'user': user,
+        'days': days,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds,
+        'count_down_date': count_down_date_str
+    }
+
+    return render(request, 'count.html', context)
+
 
 from .forms import FeedbackForm
 
@@ -176,3 +260,5 @@ def uf(request):
     
     return render(request, 'uf.html', {'form': form})
 
+def bret (request):
+    return render(request, 'bret.html')

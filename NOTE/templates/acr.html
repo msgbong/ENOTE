@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="ENOTE, bookstore, books">
-    <meta name="author" content="Frank Ssekanjako">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="ENOTE, bookstore, books" />
+    <meta name="author" content="Frank Ssekanjako" />
     <title>Admin Confirm Return</title>
-</head>
-<body>
+  </head>
+  
+  <body>
     <h1>Admin Confirm Return</h1>
 
     {% if borrowed_books %}
-        <ul>
-            {% for borrowed_book in borrowed_books %}
-                <li>
-                    <strong>{{ borrowed_book.book.title }}</strong> - Borrowed by: {{ borrowed_book.user.username }}
-                    <form method="post" action="{% url 'confirm_return' borrowed_book.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Confirm Return</button>
-                    </form>
-                </li>
-            {% endfor %}
+    <ul>
+      {% for borrowed_book in borrowed_books %}
+      <li>
+        <strong>{{ borrowed_book.book.title }}</strong> - Borrowed by: {{
+        borrowed_book.user.username }}
+        <form method="post" action="{% url 'confirm_return' borrowed_book.id %}">
+          {% csrf_token %}
+          <button type="submit">Confirm Return</button>
+        </form>
+        </li>
+        {% endfor %}
         </ul>
     {% else %}
-        <p>No books to confirm return.</p>
+    <p>No books to confirm return.</p>
     {% endif %}
-</body>
+  </body>
 </html>

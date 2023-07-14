@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="ENOTE, bookstore, books">
-    <meta name="author" content="Frank Ssekanjako">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="ENOTE, bookstore, books" />
+    <meta name="author" content="Frank Ssekanjako" />
     <title>Login</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Login</h1>
     <form method="POST" action="{% url 'login' %}">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br><br>
-        <input type="submit" value="Login">
-    </form><br><br>
-    <a href="/NOTE/signup"><button>Signup</button></a><br><br>
+      {% csrf_token %}
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required />
+      <br /><br />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+      <br /><br />
+      <input type="submit" value="Login" />
+    </form>
+    <br /><br />
+    <a href="/NOTE/signup"><button>Signup</button></a><br /><br />
     <a href="/NOTE"><button>Welcome page.🫱🏾‍🫲🏿</button></a>
-</body>
+  </body>
 </html>
