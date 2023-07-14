@@ -1,11 +1,24 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="ENOTE, bookstore, books" />
+    <meta name="author" content="Frank Ssekanjako" />
+    <link rel="icon" href="{% static 'images/f2' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>User Feedback</title>
   </head>
   <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/NOTE/dash">Dash 📚📖📕Board</a></li>
+          <li><a href="/NOTE">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
     <h1>User Feedback</h1>
 
     <form method="post" action="{% url 'uf' %}">

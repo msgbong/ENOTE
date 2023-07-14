@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="ENOTE, bookstore, books" />
     <meta name="author" content="Frank Ssekanjako" />
+    <link rel="icon" href="{% static 'images/f2' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Login</title>
   </head>
   <body>
@@ -19,7 +22,7 @@
       <br /><br />
       <input type="submit" value="Login" />
     </form>
-    <br /><br />
+    <br />OR as an ADMIN to access other pages.<br />
     <a href="/NOTE/signup"><button>Signup</button></a><br /><br />
     <a href="/NOTE"><button>Welcome page.🫱🏾‍🫲🏿</button></a>
   </body>

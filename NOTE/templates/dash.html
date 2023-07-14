@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,54 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="ENOTE, bookstore, books" />
     <meta name="author" content="Frank Ssekanjako" />
+    <link rel="icon" href="{% static 'images/f2' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>DashBoard</title>
-    <!--     <style>
-        /* Add some basic styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
-
-        img {
-            width: 100px;
-            height: auto;
-            cursor: pointer;
-        }
-
-        /* Style the navigation bar */
-        nav {
-            background-color: #f2f2f2;
-            padding: 10px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #333;
-            margin-right: 10px;
-        }
-    </style> -->
   </head>
   <body>
     <header>
       <nav>
         <ul>
-          <li><a href="/NOTE/bborrow">Borrow Books</a></li>
+          <li><a href="/NOTE/bborrow">Borrow Book</a></li>
+          <li><a href="/NOTE/acr">Confirm Book Return</a></li>
+          <li><a href="/NOTE/add">Add Book</a></li>
+          <li><a href="/NOTE/count">Time To Return</a></li>
+          <li><a href="/NOTE">Logout</a></li>
         </ul>
       </nav>
     </header>

@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.core.mail import send_mail
 from .models import UserProfile, Book, BorrowedBook, Feedback
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime, timedelta
 from .forms import BookForm
 
@@ -125,18 +125,9 @@ def borrow_book(request):
     context = {"books": available_books}
     return render(request, "bborrow.html", context)
 
+@user_passes_test(lambda u: u.is_staff, login_url='login')
+@login_required(login_url='login')
 def acr(request):
-    if not request.user.is_staff:
-        return redirect('login')  # Redirect non-admin users to login page
-
-    borrowed_books = BorrowedBook.objects.filter(is_returned=False)
-    context = {'borrowed_books': borrowed_books}
-    return render(request, 'acr.html', context)
-
-def acr(request):
-    if not request.user.is_staff:
-        return redirect('login')  # Redirect non-admin users to login page
-
     borrowed_books = BorrowedBook.objects.filter(is_returned=False)
     context = {'borrowed_books': borrowed_books}
     return render(request, 'acr.html', context)
